@@ -1,7 +1,6 @@
 import { config } from 'dotenv'
 import { describe } from '@jest/globals'
-import { getPlaceAutocomplete } from '../src/maps-api'
-import { getAutoCompleteDetails } from '../src'
+import { getPlaceAutocomplete, getAutoCompleteDetails } from '../src/maps/maps-api'
 
 config();
 

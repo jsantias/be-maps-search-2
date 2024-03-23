@@ -1,22 +1,18 @@
-import { getPlaceAutocomplete, Address } from './maps-api'
+import { getAutoCompleteDetails } from './maps/maps-api';
+import { Logger } from './services/logger';
+import dotenv from 'dotenv';
 
-export async function getAutoCompleteDetails(address: string): Promise<Address[]> {
-    if (!address || typeof address !== 'string') {
-        throw new Error('Invalid address. Please provide a valid string address.');
-    }
+dotenv.config();
 
+const logger = new Logger();
+
+async function main() {
     try {
-        const apiKey = process.env.TOMTOM_API_KEY ?? '';
-        const autocompleteResults = await getPlaceAutocomplete(apiKey, address);
-        const detailedAddresses: Address[] = await Promise.all(autocompleteResults.map(async (result) => {
-            return {
-                ...result.address,
-                id: result.id
-            };
-        }));
-        return detailedAddresses;
+        const addressDetails = await getAutoCompleteDetails('Some address');
+        logger.log(`Address details: ${JSON.stringify(addressDetails)}`);
     } catch (error) {
-        console.error('Error fetching autocomplete details:', error);
-        throw new Error('Failed to fetch autocomplete details. Please try again later.');
+        logger.error('Error fetching address details', error);
     }
 }
+
+main();
